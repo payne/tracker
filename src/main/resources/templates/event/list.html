@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title>[[#{event.list.headline}]]</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 class="flex-grow-1">[[#{event.list.headline}]]</h1>
+                <div>
+                    <a th:href="@{/events/add}" class="btn btn-primary ms-2">[[#{event.list.createNew}]]</a>
+                </div>
+            </div>
+            <div th:if="${!events.empty || filter != null}" class="row">
+                <div th:replace="~{fragments/utils::searchFilter(object='event')}" />
+                <div th:replace="~{fragments/utils::sorting(object='event', sortOptions=${ {'id,ASC', 'name,ASC', 'description,ASC'} }, columnClass='offset-lg-4')}" />
+            </div>
+            <div th:if="${events.empty}">[[#{event.list.empty}]]</div>
+            <div th:if="${!events.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th scope="col">[[#{event.id.label}]]</th>
+                            <th scope="col">[[#{event.name.label}]]</th>
+                            <th scope="col">[[#{event.description.label}]]</th>
+                            <th scope="col">[[#{event.when.label}]]</th>
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="event : ${events}">
+                            <td>[[${event.id}]]</td>
+                            <td>[[${event.name}]]</td>
+                            <td>[[${event.description}]]</td>
+                            <td>[[${event.when}]]</td>
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/events/edit/{id}(id=${event.id})}" class="btn btn-sm btn-secondary">[[#{event.list.edit}]]</a>
+                                    <form th:action="@{/events/delete/{id}(id=${event.id})}"
+                                            th:hx-confirm="#{delete.confirm}" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-secondary">[[#{event.list.delete}]]</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:replace="~{fragments/utils::pagination()}" />
+        </div>
+    </body>
+</html>

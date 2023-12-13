@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title>[[#{person.list.headline}]]</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 class="flex-grow-1">[[#{person.list.headline}]]</h1>
+                <div>
+                    <a th:href="@{/people/add}" class="btn btn-primary ms-2">[[#{person.list.createNew}]]</a>
+                </div>
+            </div>
+            <div th:if="${!persons.empty || filter != null}" class="row">
+                <div th:replace="~{fragments/utils::searchFilter(object='person')}" />
+                <div th:replace="~{fragments/utils::sorting(object='person', sortOptions=${ {'id,ASC', 'firstName,ASC', 'lastName,ASC'} }, columnClass='offset-lg-4')}" />
+            </div>
+            <div th:if="${persons.empty}">[[#{person.list.empty}]]</div>
+            <div th:if="${!persons.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th scope="col">[[#{person.id.label}]]</th>
+                            <th scope="col">[[#{person.firstName.label}]]</th>
+                            <th scope="col">[[#{person.lastName.label}]]</th>
+                            <th scope="col">[[#{person.email.label}]]</th>
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="person : ${persons}">
+                            <td>[[${person.id}]]</td>
+                            <td>[[${person.firstName}]]</td>
+                            <td>[[${person.lastName}]]</td>
+                            <td>[[${person.email}]]</td>
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/people/edit/{id}(id=${person.id})}" class="btn btn-sm btn-secondary">[[#{person.list.edit}]]</a>
+                                    <form th:action="@{/people/delete/{id}(id=${person.id})}"
+                                            th:hx-confirm="#{delete.confirm}" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-secondary">[[#{person.list.delete}]]</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:replace="~{fragments/utils::pagination()}" />
+        </div>
+    </body>
+</html>

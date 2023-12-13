@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title>[[#{invite.list.headline}]]</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 class="flex-grow-1">[[#{invite.list.headline}]]</h1>
+                <div>
+                    <a th:href="@{/invites/add}" class="btn btn-primary ms-2">[[#{invite.list.createNew}]]</a>
+                </div>
+            </div>
+            <div th:if="${!invites.empty || filter != null}" class="row">
+                <div th:replace="~{fragments/utils::searchFilter(object='invite')}" />
+                <div th:replace="~{fragments/utils::sorting(object='invite', sortOptions=${ {'id,ASC', 'sent,ASC', 'notes,ASC'} }, columnClass='offset-lg-4')}" />
+            </div>
+            <div th:if="${invites.empty}">[[#{invite.list.empty}]]</div>
+            <div th:if="${!invites.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th scope="col">[[#{invite.id.label}]]</th>
+                            <th scope="col">[[#{invite.sent.label}]]</th>
+                            <th scope="col">[[#{invite.personId.label}]]</th>
+                            <th scope="col">[[#{invite.eventId.label}]]</th>
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="invite : ${invites}">
+                            <td>[[${invite.id}]]</td>
+                            <td>[[${invite.sent}]]</td>
+                            <td>[[${invite.personId}]]</td>
+                            <td>[[${invite.eventId}]]</td>
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/invites/edit/{id}(id=${invite.id})}" class="btn btn-sm btn-secondary">[[#{invite.list.edit}]]</a>
+                                    <form th:action="@{/invites/delete/{id}(id=${invite.id})}"
+                                            th:hx-confirm="#{delete.confirm}" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-secondary">[[#{invite.list.delete}]]</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:replace="~{fragments/utils::pagination()}" />
+        </div>
+    </body>
+</html>
