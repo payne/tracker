@@ -16,11 +16,6 @@ Lombok must be supported by your IDE. For IntelliJ install the Lombok plugin and
 
 After starting the application it is accessible under `localhost:8080`.
 
-## Testing requirements
-
-To run the tests and build, [Docker](https://www.docker.com/get-started/) must be available on the current system. Due
-to the reuse flag, the container will not shut down after the tests. It can be stopped manually if needed.
-
 ## Build
 
 The application can be tested and built using the following command:
