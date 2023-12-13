@@ -119,6 +119,24 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!--source: http://stackoverflow.com/a/3493919/918211-->
+            <plugin>
+                <artifactId>exec-maven-plugin</artifactId>
+                <groupId>org.codehaus.mojo</groupId>
+                <executions>
+                    <execution><!-- Run our version calculation script -->
+                        <id>Test Python</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>${basedir}/scripts/run-pytest.sh</executable>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>
