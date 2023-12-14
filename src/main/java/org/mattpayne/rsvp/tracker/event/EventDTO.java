@@ -21,6 +21,7 @@ public class EventDTO {
     @Size(max = 255)
     private String description;
 
+    @NotNull
     private LocalDateTime when;
 
     private List<Long> people;

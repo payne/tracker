@@ -41,7 +41,7 @@ public class Invite {
     @Column(nullable = false)
     private LocalDateTime sent;
 
-    @Column
+    @Column(columnDefinition = "text")
     private String notes;
 
     @Column(nullable = false)

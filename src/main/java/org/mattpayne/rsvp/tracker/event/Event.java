@@ -49,7 +49,7 @@ public class Event {
     @Column
     private String description;
 
-    @Column(name = "\"when\"")
+    @Column(nullable = false, name = "\"when\"")
     private LocalDateTime when;
 
     @ManyToMany
